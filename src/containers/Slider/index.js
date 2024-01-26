@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react"; // fixed by adding Fragment
 import { useData } from "../../contexts/DataContext";
 import { getMonth } from "../../helpers/Date";
 
@@ -9,26 +9,25 @@ const Slider = () => {
   const [index, setIndex] = useState(0);
   const byDateDesc = data?.focus.sort(
     (evtA, evtB) =>
-    new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
+      new Date(evtA.date) > new Date(evtB.date) ? -1 : 1 // fixed to sort correctly
   );
   const nextCard = () => {
     setTimeout(
-      () => setIndex(index < byDateDesc.length -1 ? index + 1 : 0),
+      () => setIndex(index < (byDateDesc ? byDateDesc.length - 1 : 0) ? index + 1 : 0), // fixed when byDateDesc function is undefined
       5000
     );
   };
   useEffect(() => {
     nextCard();
-  });
+  }) ;
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
-        <>
+        <Fragment key={event.title}>
           <div
-            key={event.title}
-            className={`SlideCard SlideCard--${
-              index === idx ? "display" : "hide"
-            }`}
+            
+            className={`SlideCard SlideCard--${index === idx ? "display" : "hide"
+              }`}
           >
             <img src={event.cover} alt="forum" />
             <div className="SlideCard__descriptionContainer">
@@ -39,20 +38,22 @@ const Slider = () => {
               </div>
             </div>
           </div>
-          <div className="SlideCard__paginationContainer">
+
+          </Fragment>// fixed by adding Fragment
+          ))}<div className="SlideCard__paginationContainer">
             <div className="SlideCard__pagination">
-              {byDateDesc.map((e, radioIdx) => (
+              {byDateDesc?.map((_, radioIdx) => (
                 <input
-                  key={`${event.id}`}
+                  key={`${ _ + radioIdx}`} // fixed because event.id doesn't exist
                   type="radio"
                   name="radio-button"
-                  checked={index === radioIdx}
+                  checked={index === radioIdx} // fixed by replacing idx by index
                 />
               ))}
             </div>
           </div>
-        </>
-      ))}
+        
+      
     </div>
   );
 };
