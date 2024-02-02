@@ -19,13 +19,13 @@ const Slider = () => {
   };
   useEffect(() => {
     nextCard();
-  }) ;
+  });
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
         <Fragment key={event.title}>
           <div
-            
+
             className={`SlideCard SlideCard--${index === idx ? "display" : "hide"
               }`}
           >
@@ -39,21 +39,22 @@ const Slider = () => {
             </div>
           </div>
 
-          </Fragment>// fixed by adding Fragment
-          ))}<div className="SlideCard__paginationContainer">
-            <div className="SlideCard__pagination">
-              {byDateDesc?.map((_, radioIdx) => (
-                <input
-                  key={`${ _ + radioIdx}`} // fixed because event.id doesn't exist
-                  type="radio"
-                  name="radio-button"
-                  checked={index === radioIdx} // fixed by replacing idx by index
-                />
-              ))}
-            </div>
-          </div>
-        
-      
+        </Fragment>// fixed by adding Fragment
+      ))}<div className="SlideCard__paginationContainer">
+        <div className="SlideCard__pagination">
+          {byDateDesc?.map((_, radioIdx) => (
+            <input
+              key={`${_ + radioIdx}`} // fixed because event.id doesn't exist
+              type="radio"
+              name="radio-button"
+              checked={index === radioIdx} // fixed by replacing idx by index
+              readOnly // to avoid warning in console
+            />
+          ))}
+        </div>
+      </div>
+
+
     </div>
   );
 };
